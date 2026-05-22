@@ -1,6 +1,7 @@
 name: UI and API Tests
 
 "on":
+
   push:
     branches:
       - main
@@ -8,6 +9,8 @@ name: UI and API Tests
   pull_request:
     branches:
       - main
+
+  workflow_dispatch:
 
 jobs:
 
@@ -35,7 +38,7 @@ jobs:
             ${{ runner.os }}-m2
 
       - name: Run UI and API Tests
-        run: mvn clean test "-Dbrowser=chrome" "-Dheadless=true" "-DapiKey=${{ secrets.REQRES_API_KEY }}"
+        run: mvn clean test "-Dbrowser=edge" "-Dheadless=true" "-DapiKey=${{ secrets.REQRES_API_KEY }}"
 
       - name: Upload Allure Results
         if: always()
