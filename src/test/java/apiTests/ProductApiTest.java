@@ -4,10 +4,16 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import utils.ApiClient;
+import io.qameta.allure.*;
 
+@Epic("API Tests")
+@Feature("Product API")
 public class ProductApiTest {
 
+
     @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify users list API")
     public void getUsersTest() {
 
         Response response = ApiClient.get("/api/users?page=2");
