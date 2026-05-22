@@ -9,11 +9,20 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
 
   test:
 
     runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
 
@@ -43,16 +52,16 @@ jobs:
         if: always()
         run: |
           npm install -g allure-commandline
-          allure generate target/allure-results -o target/allure-report --clean
+          allure generate target/allure-results -o allure-report --clean
 
-      - name: Upload Allure Results
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: allure-results
-          path: |
-            target/allure-results
-            target/allure-report
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
       - name: Upload Cucumber Reports
         if: always()
