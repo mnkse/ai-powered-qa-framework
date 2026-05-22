@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-m2
 
       - name: Run UI and API Tests
-        run: mvn clean test "-Dbrowser=chrome" "-Dheadless=true"
+        run: mvn clean test "-Dbrowser=chrome" "-Dheadless=true" "-DapiKey=${{ secrets.REQRES_API_KEY }}"
 
       - name: Upload Allure Results
         if: always()

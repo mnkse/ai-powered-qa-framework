@@ -11,7 +11,10 @@ public class ApiClient {
 
     private static String getApiKey() {
 
-        return ConfigReader.getProperty("apiKey");
+        return System.getProperty(
+                "apiKey",
+                ConfigReader.getProperty("apiKey")
+        );
     }
 
     public static Response get(String endpoint) {
