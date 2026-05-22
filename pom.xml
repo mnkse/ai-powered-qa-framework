@@ -80,6 +80,7 @@
                 <configuration>
                     <includes>
                         <include>**/TestRunner.java</include>
+                        <include>**/TestRunner.java</include>
                     </includes>
 
                     <systemPropertyVariables>
