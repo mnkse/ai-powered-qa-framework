@@ -79,7 +79,7 @@
 
                 <configuration>
                     <includes>
-                        <include>**/TestRunner.java</include>
+                        <include>**/*Test.java</include>
                         <include>**/TestRunner.java</include>
                     </includes>
 
