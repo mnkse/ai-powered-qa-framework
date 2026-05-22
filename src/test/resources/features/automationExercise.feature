@@ -13,4 +13,3 @@ Feature: Automation Exercise Product Search
       | product |
       | dress   |
       | top     |
-      | jeans   |
