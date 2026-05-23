@@ -8,6 +8,17 @@ on:
     branches: [ main ]
 
   workflow_dispatch:
+    inputs:
+      testType:
+        description: Select test type
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ui
+          - api
+          - smoke
 
 permissions:
   contents: read
@@ -15,9 +26,7 @@ permissions:
   id-token: write
 
 jobs:
-
   test:
-
     runs-on: ubuntu-latest
 
     environment:
@@ -25,7 +34,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -45,8 +53,21 @@ jobs:
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: maven-
 
-      - name: Run UI and API Tests
+      - name: Run all tests
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.testType == 'all' }}
         run: mvn clean test -Dbrowser=chrome -Dheadless=true -DapiKey=${{ secrets.REQRES_API_KEY }}
+
+      - name: Run UI tests
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.testType == 'ui' }}
+        run: mvn clean test -Dtest=TestRunner -Dbrowser=chrome -Dheadless=true -DapiKey=${{ secrets.REQRES_API_KEY }}
+
+      - name: Run API tests
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.testType == 'api' }}
+        run: mvn clean test -Dtest=*ApiTest -DapiKey=${{ secrets.REQRES_API_KEY }}
+
+      - name: Run smoke tests
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.testType == 'smoke' }}
+        run: mvn clean test -Dtest=TestRunner -Dcucumber.filter.tags="@smoke" -Dbrowser=chrome -Dheadless=true -DapiKey=${{ secrets.REQRES_API_KEY }}
 
       - name: Generate Allure Report
         if: always()
@@ -55,11 +76,13 @@ jobs:
           allure generate target/allure-results -o allure-report --clean
 
       - name: Upload Pages Artifact
+        if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: allure-report
 
       - name: Deploy to GitHub Pages
+        if: always()
         id: deployment
         uses: actions/deploy-pages@v4
 
