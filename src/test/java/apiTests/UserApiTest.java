@@ -1,10 +1,11 @@
 package api;
 
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import utils.ApiClient;
-import io.qameta.allure.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,11 @@ public class UserApiTest {
 
         Response response =
                 ApiClient.post("/api/users", requestBody);
+
+        Allure.addAttachment(
+                "Create User API Response",
+                response.asPrettyString()
+        );
 
         System.out.println(response.asPrettyString());
 

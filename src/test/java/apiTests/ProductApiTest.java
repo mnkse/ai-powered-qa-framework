@@ -8,17 +8,20 @@ import utils.ApiClient;
 
 @Epic("API Tests")
 @Feature("Product API")
-
 public class ProductApiTest {
 
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify users list API")
-
     public void getUsersTest() {
 
         Response response =
                 ApiClient.get("/api/users?page=2");
+
+        Allure.addAttachment(
+                "Get Users API Response",
+                response.asPrettyString()
+        );
 
         System.out.println(response.asPrettyString());
 
