@@ -27,7 +27,8 @@ public class AutomationExercisePage extends BasePage {
 
         try {
 
-            click(productsButton);
+            scrollToElement(productsButton);
+            jsClick(productsButton);
 
             find(allProductsTitle);
 
@@ -35,7 +36,8 @@ public class AutomationExercisePage extends BasePage {
 
             driver.navigate().refresh();
 
-            click(productsButton);
+            scrollToElement(productsButton);
+            jsClick(productsButton);
 
             find(allProductsTitle);
         }
