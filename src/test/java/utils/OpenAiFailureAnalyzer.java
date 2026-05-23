@@ -41,11 +41,11 @@ public class OpenAiFailureAnalyzer {
                             "Analyze this failed automated test scenario.\n\n" +
                             "Scenario Name: " + scenario.getName() + "\n" +
                             "Error Message: " + errorMessage + "\n\n" +
-                            "Provide:\n" +
-                            "1. Root cause\n" +
-                            "2. Possible fixes\n" +
-                            "3. Stability improvements\n" +
-                            "4. CI/CD recommendations";
+                            "Return the answer in clean Markdown format with these sections:\n" +
+                            "## Root Cause\n" +
+                            "## Possible Fixes\n" +
+                            "## Stability Improvements\n" +
+                            "## CI/CD Recommendations";
 
             String escapedPrompt =
                     prompt
@@ -64,7 +64,7 @@ public class OpenAiFailureAnalyzer {
                           "content": "%s"
                         }
                       ],
-                      "max_tokens": 300
+                      "max_tokens": 500
                     }
                     """.formatted(escapedPrompt);
 
@@ -137,11 +137,12 @@ public class OpenAiFailureAnalyzer {
                                 "\n\n"
                 );
 
-                writer.write(
-                        "## OpenAI Response\n\n"
-                );
+                String cleanResponse =
+                        extractContentFromResponse(
+                                response.body()
+                        );
 
-                writer.write(response.body());
+                writer.write(cleanResponse);
 
                 writer.write(
                         "\n\n--------------------------\n\n"
@@ -161,6 +162,52 @@ public class OpenAiFailureAnalyzer {
             );
 
             System.out.println(e.getMessage());
+        }
+    }
+
+    private static String extractContentFromResponse(
+            String responseBody
+    ) {
+
+        try {
+
+            int contentIndex =
+                    responseBody.indexOf("\"content\":");
+
+            if (contentIndex == -1) {
+                return responseBody;
+            }
+
+            int start =
+                    responseBody.indexOf(
+                            "\"",
+                            contentIndex + 10
+                    ) + 1;
+
+            int end =
+                    responseBody.indexOf(
+                            "\",",
+                            start
+                    );
+
+            if (end == -1) {
+                return responseBody;
+            }
+
+            String content =
+                    responseBody.substring(
+                            start,
+                            end
+                    );
+
+            return content
+                    .replace("\\n", "\n")
+                    .replace("\\\"", "\"")
+                    .replace("\\/", "/");
+
+        } catch (Exception e) {
+
+            return responseBody;
         }
     }
 }
