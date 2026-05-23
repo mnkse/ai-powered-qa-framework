@@ -3,6 +3,7 @@ package stepDefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.qameta.allure.Allure;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import utils.DriverFactory;
@@ -12,7 +13,6 @@ public class Hooks {
 
     @Before
     public void setUp() {
-
         DriverFactory.getDriver();
     }
 
@@ -33,10 +33,18 @@ public class Hooks {
                         scenario.getName()
                 );
 
-                OpenAiFailureAnalyzer.analyzeFailure(
-                        scenario,
-                        "Scenario failed during execution"
-                );
+                String aiAnalysis =
+                        OpenAiFailureAnalyzer.analyzeFailure(
+                                scenario,
+                                "Scenario failed during execution"
+                        );
+
+                if (aiAnalysis != null && !aiAnalysis.isEmpty()) {
+                    Allure.addAttachment(
+                            "AI Failure Analysis",
+                            aiAnalysis
+                    );
+                }
             }
 
         } catch (Exception e) {

@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 
 public class OpenAiFailureAnalyzer {
 
-    public static void analyzeFailure(
+    public static String analyzeFailure(
             Scenario scenario,
             String errorMessage
     ) {
 
         if (!scenario.isFailed()) {
-            return;
+            return "";
         }
 
         try {
@@ -28,12 +28,8 @@ public class OpenAiFailureAnalyzer {
                     System.getenv("OPENAI_API_KEY");
 
             if (apiKey == null || apiKey.isEmpty()) {
-
-                System.out.println(
-                        "OPENAI_API_KEY is not defined."
-                );
-
-                return;
+                System.out.println("OPENAI_API_KEY is not defined.");
+                return "";
             }
 
             String prompt =
@@ -99,6 +95,11 @@ public class OpenAiFailureAnalyzer {
                             HttpResponse.BodyHandlers.ofString()
                     );
 
+            String cleanResponse =
+                    extractContentFromResponse(
+                            response.body()
+                    );
+
             File directory =
                     new File("target/ai-analysis");
 
@@ -115,53 +116,26 @@ public class OpenAiFailureAnalyzer {
             try (FileWriter writer =
                          new FileWriter(report, true)) {
 
-                writer.write(
-                        "# AI Failure Analysis\n\n"
-                );
-
-                writer.write(
-                        "Time: " +
-                                LocalDateTime.now() +
-                                "\n\n"
-                );
-
-                writer.write(
-                        "Scenario: " +
-                                scenario.getName() +
-                                "\n\n"
-                );
-
-                writer.write(
-                        "Error Message: " +
-                                errorMessage +
-                                "\n\n"
-                );
-
-                String cleanResponse =
-                        extractContentFromResponse(
-                                response.body()
-                        );
-
+                writer.write("# AI Failure Analysis\n\n");
+                writer.write("Time: " + LocalDateTime.now() + "\n\n");
+                writer.write("Scenario: " + scenario.getName() + "\n\n");
+                writer.write("Error Message: " + errorMessage + "\n\n");
                 writer.write(cleanResponse);
-
-                writer.write(
-                        "\n\n--------------------------\n\n"
-                );
+                writer.write("\n\n--------------------------\n\n");
             }
+
+            return cleanResponse;
 
         } catch (IOException e) {
 
-            System.out.println(
-                    "AI analysis report could not be written."
-            );
+            System.out.println("AI analysis report could not be written.");
+            return "";
 
         } catch (Exception e) {
 
-            System.out.println(
-                    "OpenAI analysis failed."
-            );
-
+            System.out.println("OpenAI analysis failed.");
             System.out.println(e.getMessage());
+            return "";
         }
     }
 

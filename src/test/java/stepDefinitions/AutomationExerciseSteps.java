@@ -39,7 +39,6 @@ public class AutomationExerciseSteps {
         String actualTitle = automationPage.getPageTitle();
 
         Assert.assertTrue(actualTitle.contains("Automation Exercise"));
-
         DriverFactory.quitDriver();
     }
 }
