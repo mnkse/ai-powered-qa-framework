@@ -38,6 +38,7 @@ This framework supports both UI and API automation testing while also providing 
 ## ✅ Reporting
 - Allure Report integration
 - Screenshot on failure
+- AI Failure Analysis attachment
 - GitHub Pages Allure publishing
 - Cucumber HTML report
 
@@ -62,6 +63,7 @@ When a test fails:
 - Failure details are collected
 - OpenAI analyzes the failure
 - AI-generated recommendations are written into a markdown report
+- AI analysis is attached directly into Allure Report
 
 Generated report example:
 
@@ -75,6 +77,20 @@ AI analysis may include:
 - Stability improvements
 - CI/CD recommendations
 - Synchronization improvements
+
+---
+
+# 📸 Reporting Preview
+
+## Allure Dashboard
+
+![Allure Dashboard](screenshots/allure-dashboard.png)
+
+---
+
+## AI Failure Analysis Attachment
+
+![AI Failure Analysis](screenshots/ai-analysis.png)
 
 ---
 
