@@ -1,152 +1,198 @@
-# QA Automation Framework
+# AI-Powered QA Framework 🚀
 
-Hybrid UI + API Test Automation Framework built with Selenium, Cucumber BDD, Rest Assured, Maven, Allure Report and GitHub Actions CI/CD.
+AI-Powered QA Framework is a modern hybrid test automation framework built with Selenium, Cucumber BDD, Rest Assured, Maven, GitHub Actions, Allure Reporting, and OpenAI integration.
+
+This framework supports both UI and API automation testing while also providing AI-assisted failure analysis for failed test scenarios.
 
 ---
 
-# 🚀 Tech Stack
+# 🔥 Features
+
+## ✅ UI Automation
+- Selenium WebDriver
+- Java 21
+- Page Object Model (POM)
+- Explicit Wait utilities
+- Headless Chrome support
+- Thread-safe DriverFactory
+- Parallel execution support
+
+---
+
+## ✅ API Automation
+- Rest Assured
+- GET / POST API testing
+- API key management with GitHub Secrets
+- Hybrid UI + API execution
+
+---
+
+## ✅ BDD Structure
+- Cucumber BDD
+- Feature files
+- Step Definitions
+- Hooks management
+
+---
+
+## ✅ Reporting
+- Allure Report integration
+- Screenshot on failure
+- GitHub Pages Allure publishing
+- Cucumber HTML report
+
+---
+
+## ✅ CI/CD
+- GitHub Actions
+- Maven profiles
+- Workflow Dispatch support
+- UI / API / Smoke test selection
+- Ubuntu runner
+- Chrome Headless execution
+
+---
+
+# 🤖 AI-Powered Failure Analysis
+
+This framework includes a custom AI Failure Analyzer integrated with OpenAI API.
+
+When a test fails:
+- Screenshot is captured
+- Failure details are collected
+- OpenAI analyzes the failure
+- AI-generated recommendations are written into a markdown report
+
+Generated report example:
+
+```text
+target/ai-analysis/ai-failure-analysis.md
+```
+
+AI analysis may include:
+- Root cause detection
+- Locator strategy suggestions
+- Stability improvements
+- CI/CD recommendations
+- Synchronization improvements
+
+---
+
+# 🧠 Technologies Used
 
 - Java 21
 - Selenium 4
-- Cucumber BDD
+- Cucumber 7
 - JUnit 4
 - Rest Assured
 - Maven
-- Allure Report
 - GitHub Actions
-- GitHub Pages
-- WebDriverManager
-- Logback
+- Allure Report
+- OpenAI API
+- Java HttpClient
 
 ---
 
-# 📁 Framework Architecture
+# ⚡ Parallel Execution
 
-- Page Object Model (POM)
-- BasePage design
-- WaitUtils
-- ThreadLocal DriverFactory
-- Config-driven execution
-- Tag-based test execution
-- Reusable API Client
-- Screenshot on failure
-- Retry / rerun support
+Framework supports parallel execution using Maven Surefire Plugin.
+
+```xml
+<parallel>methods</parallel>
+<threadCount>2</threadCount>
+```
 
 ---
 
-# ✅ Implemented Features
+# 🔐 Secret Management
 
-## UI Automation
+Sensitive data is managed securely using:
+- GitHub Secrets
+- Environment Variables
 
-- Selenium UI automation
-- Cucumber feature files
-- Step Definitions
-- Smoke test support
-- Headless execution
-- Chrome CI execution
-- Dynamic waits
-- JavaScript click support for CI stability
+Example:
 
----
-
-## API Automation
-
-- GET API tests
-- POST API tests
-- Response validation
-- JSON assertions
-- Reusable API client utility
-
----
-
-## Reporting
-
-- Allure Report integration
-- Cucumber HTML report
-- JSON report generation
-- GitHub Pages Allure publish
-
----
-
-# ⚙️ CI/CD Pipeline
-
-Implemented with GitHub Actions.
-
-## Supported workflow executions
-
-- all
-- ui
-- api
-- smoke
-
-## Features
-
-- Automated test execution
-- Maven caching
-- Headless Chrome setup
-- GitHub Pages deployment
-- Report artifact upload
+```powershell
+$env:OPENAI_API_KEY="your-api-key"
+```
 
 ---
 
 # ▶️ Run Tests
 
-## Run all tests
+## Run All Tests
 
 ```bash
 mvn clean test
 ```
 
-## Run UI tests
+## Run UI Tests
 
 ```bash
-mvn clean test -Pui
+mvn test -Pui
 ```
 
-## Run API tests
+## Run API Tests
 
 ```bash
-mvn clean test -Papi
+mvn test -Papi
+```
+
+## Run Smoke Tests
+
+```bash
+mvn clean test -Dcucumber.filter.tags="@smoke"
 ```
 
 ---
 
 # 📊 Allure Report
 
-Generate local report:
+Generate Allure report locally:
 
 ```bash
 allure serve target/allure-results
 ```
 
+GitHub Actions automatically publishes Allure reports to GitHub Pages.
+
 ---
 
-# 🧪 Sample Tags
+# 📁 Project Structure
 
-```gherkin
-@ui @smoke
-@ui @regression
-@api
+```text
+src
+ ├── main
+ └── test
+      ├── features
+      ├── pages
+      ├── runners
+      ├── stepDefinitions
+      ├── apiTests
+      └── utils
 ```
 
 ---
 
-# 📌 Future Improvements
+# 🚀 Future Improvements
 
-- Parallel execution
-- Docker + Selenium Grid
+Planned enhancements:
+- AI response parsing
+- AI flaky test detection
+- AI self-healing locators
+- AI-generated test cases
+- AI-powered log analysis
+- Docker support
+- Selenium Grid
+- Jenkins pipeline
+- Advanced Allure attachments
+- Retry optimization
 - Environment management
 - JSON schema validation
-- AI Failure Analyzer
-- AI self-healing locators
-- AI visual testing
-- API request/response attachment stabilization
-- Nightly regression pipeline
-- Push → smoke optimization
 
 ---
 
 # 👨‍💻 Author
 
-MENEKŞE ERHAN
+MENEKŞE ERHAN  
 Senior QA Automation Engineer
